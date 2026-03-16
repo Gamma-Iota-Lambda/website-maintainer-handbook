@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Maintainer Handbook — Gamma Iota Lambda Chapter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ─── VARIABLES ─── */
+    :root {
+      --gold: #B8860B;
+      --gold-bright: #D4A017;
+      --gold-light: #FAF0BE;
+      --gold-pale: rgba(212,160,23,0.12);
+      --black: #0A0A0A;
+      --black-soft: #111111;
+      --black-mid: #181818;
+      --surface: #141414;
+      --surface-2: #1c1c1c;
+      --border: rgba(184,134,11,0.2);
+      --border-soft: rgba(255,255,255,0.06);
+      --white: #FFFFFF;
+      --text: #E8E4D9;
+      --text-muted: rgba(232,228,217,0.55);
+      --text-dim: rgba(232,228,217,0.35);
+      --sidebar-w: 280px;
+      --code-bg: #0d0d0d;
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── LAYOUT ─── */
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--black-soft);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    .sidebar-header {
+      padding: 2rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .sidebar-crest {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--gold-pale);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--gold-bright);
+      font-weight: 700;
+    }
+
+    .sidebar-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+
+    .sidebar-subtitle {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .sidebar-nav {
+      padding: 1.25rem 0 2rem;
+      flex: 1;
+    }
+
+    .nav-section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 1.25rem 1.5rem 0.4rem;
+    }
+
+    .nav-section-label:first-child { padding-top: 0.25rem; }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 1.5rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+      border-left: 2px solid transparent;
+      line-height: 1.3;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--gold-bright);
+      background: var(--gold-pale);
+      border-left-color: var(--gold);
+    }
+
+    .sidebar-nav a.active {
+      color: var(--gold-bright);
+      background: var(--gold-pale);
+      border-left-color: var(--gold);
+      font-weight: 500;
+    }
+
+    .nav-icon {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    .main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+    }
+
+    /* ─── TOP BANNER ─── */
+    .top-banner {
+      background: var(--black-soft);
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 5% 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(184,134,11,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .top-banner-watermark {
+      position: absolute;
+      right: -1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(6rem, 14vw, 12rem);
+      font-weight: 900;
+      font-style: italic;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,134,11,0.07);
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+      letter-spacing: -0.03em;
+    }
+
+    .top-banner-inner { position: relative; z-index: 2; max-width: 800px; }
+
+    .banner-eyebrow {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .banner-eyebrow::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--gold);
+    }
+    .banner-eyebrow span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .banner-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .banner-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.7;
+    }
+
+    .banner-meta {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      margin-top: 1.75rem;
+    }
+
+    .meta-chip {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .meta-chip::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    /* ─── CONTENT AREA ─── */
+    .content-area {
+      padding: 0 5% 6rem;
+      max-width: 900px;
+    }
+
+    /* ─── SECTIONS ─── */
+    .doc-section {
+      padding-top: 4rem;
+    }
+
+    .section-anchor {
+      position: relative;
+      top: -80px;
+      visibility: hidden;
+      display: block;
+    }
+
+    .section-header {
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .section-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--gold);
+      opacity: 0.35;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .section-title-wrap {}
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    /* ─── PROSE ─── */
+    .prose p { margin-bottom: 1.1rem; font-size: 0.95rem; color: var(--text); }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { font-weight: 600; color: var(--white); }
+    .prose em { font-style: italic; color: var(--gold-light); }
+    .prose a { color: var(--gold-bright); text-decoration: none; border-bottom: 1px solid rgba(212,160,23,0.35); transition: border-color 0.2s; }
+    .prose a:hover { border-color: var(--gold-bright); }
+
+    /* ─── CALLOUT BOXES ─── */
+    .callout {
+      border-left: 3px solid var(--gold);
+      background: var(--gold-pale);
+      padding: 1rem 1.25rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+    }
+    .callout.warn {
+      border-color: #e07b2b;
+      background: rgba(224,123,43,0.08);
+    }
+    .callout.tip {
+      border-color: #3b8a5a;
+      background: rgba(59,138,90,0.08);
+    }
+    .callout-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.35rem;
+    }
+    .callout.warn .callout-label { color: #e07b2b; }
+    .callout.tip .callout-label { color: #3b8a5a; }
+
+    /* ─── CODE ─── */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em;
+      background: var(--code-bg);
+      border: 1px solid var(--border-soft);
+      padding: 0.15em 0.45em;
+      border-radius: 3px;
+      color: var(--gold-light);
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      position: relative;
+    }
+
+    pre code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .code-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Syntax coloring */
+    .c-tag { color: #9ecde8; }
+    .c-attr { color: #b8d7a3; }
+    .c-val { color: #ce9178; }
+    .c-comment { color: #6a9955; font-style: italic; }
+    .c-gold { color: var(--gold-bright); }
+    .c-muted { color: var(--text-muted); }
+
+    /* ─── FILE TREE ─── */
+    .file-tree {
+      background: var(--code-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.9;
+      margin: 1.25rem 0;
+    }
+    .ft-dir { color: var(--gold-bright); font-weight: 500; }
+    .ft-file { color: var(--text); }
+    .ft-dim { color: var(--text-dim); }
+    .ft-comment { color: #6a9955; font-style: italic; margin-left: 1em; }
+
+    /* ─── STEP LIST ─── */
+    .steps { margin: 1.25rem 0; counter-reset: step; }
+    .step {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      margin-bottom: 0.6rem;
+      counter-increment: step;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--gold-pale);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+    }
+    .step-content { font-size: 0.9rem; line-height: 1.6; }
+    .step-content strong { color: var(--white); font-weight: 600; }
+
+    /* ─── TABLE ─── */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 1.25rem 0;
+    }
+    .doc-table th {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--surface);
+      padding: 0.65rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-table td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border-soft);
+      color: var(--text);
+      vertical-align: top;
+    }
+    .doc-table tr:last-child td { border-bottom: none; }
+    .doc-table td code { font-size: 0.78rem; }
+    .status-ok { color: #3b8a5a; font-weight: 500; }
+    .status-warn { color: #e07b2b; font-weight: 500; }
+
+    /* ─── SERVICE CARDS ─── */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .service-card:hover { border-color: var(--border); }
+    .service-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .service-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.75rem; }
+    .service-link {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold-bright);
+      text-decoration: none;
+    }
+
+    /* ─── DIVIDER ─── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border-soft);
+      margin: 3rem 0 0;
+    }
+
+    /* ─── GLOSSARY TERM ─── */
+    .term-list { margin: 1rem 0; }
+    .term-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 0.75rem 1.5rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 0.88rem;
+      align-items: baseline;
+    }
+    .term-item:last-child { border-bottom: none; }
+    .term-key { color: var(--gold-bright); font-weight: 500; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 0.05em; }
+    .term-val { color: var(--text-muted); line-height: 1.55; }
+
+    /* ─── TROUBLESHOOT ─── */
+    .trouble-item {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    .trouble-q {
+      padding: 1rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer;
+      gap: 1rem;
+    }
+    .trouble-q::after {
+      content: '↓';
+      color: var(--gold);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .trouble-item.open .trouble-q::after { transform: rotate(180deg); }
+    .trouble-a {
+      padding: 0 1.25rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-top: 0px solid var(--border-soft);
+      line-height: 1.65;
+    }
+    .trouble-item.open .trouble-a {
+      max-height: 400px;
+      padding: 1rem 1.25rem 1.25rem;
+      border-top-width: 1px;
+    }
+
+    /* ─── FOOTER ─── */
+    .doc-footer {
+      margin-left: var(--sidebar-w);
+      padding: 2rem 5%;
+      border-top: 1px solid var(--border-soft);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── MOBILE SIDEBAR TOGGLE ─── */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      bottom: 1.5rem; right: 1.5rem;
+      z-index: 200;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      border-radius: 50%;
+      width: 48px; height: 48px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 260px; }
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .doc-footer { margin-left: 0; }
+      .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+      .top-banner-watermark { display: none; }
+      .content-area { padding: 0 6% 5rem; }
+      .term-item { grid-template-columns: 1fr; gap: 0.25rem; }
+    }
+
+    @media (max-width: 600px) {
+      .section-header { flex-direction: column; gap: 0.5rem; }
+      .section-num { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layout">
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-crest">α</div>
+        <div class="sidebar-title">Gamma Iota Lambda</div>
+        <div class="sidebar-subtitle">Website Maintainer<br>Handbook · gil1906.org</div>
+      </div>
+      <nav class="sidebar-nav">
+
+        <div class="nav-section-label">Getting Started</div>
+        <a href="#overview"><span class="nav-icon">◈</span> Overview</a>
+        <a href="#site-structure"><span class="nav-icon">◈</span> Site Structure</a>
+        <a href="#tools"><span class="nav-icon">◈</span> Tools You Need</a>
+
+        <div class="nav-section-label">Making Edits</div>
+        <a href="#content-edits"><span class="nav-icon">◈</span> Editing Text & Content</a>
+        <a href="#navigation"><span class="nav-icon">◈</span> The Navigation</a>
+        <a href="#styling"><span class="nav-icon">◈</span> Styling & CSS</a>
+        <a href="#exec-board"><span class="nav-icon">◈</span> Executive Board</a>
+        <a href="#headshots"><span class="nav-icon">◈</span> Headshots & Photos</a>
+
+        <div class="nav-section-label">Events & Media</div>
+        <a href="#events"><span class="nav-icon">◈</span> Events Page</a>
+        <a href="#carousels"><span class="nav-icon">◈</span> Photo Carousels</a>
+        <a href="#image-compression"><span class="nav-icon">◈</span> Image Compression</a>
+
+        <div class="nav-section-label">Services & SEO</div>
+        <a href="#third-party"><span class="nav-icon">◈</span> Third-Party Services</a>
+        <a href="#seo"><span class="nav-icon">◈</span> SEO & Meta Tags</a>
+
+        <div class="nav-section-label">Deployment</div>
+        <a href="#deployment"><span class="nav-icon">◈</span> Publishing Changes</a>
+        <a href="#annual"><span class="nav-icon">◈</span> Annual Update Checklist</a>
+        <a href="#troubleshooting"><span class="nav-icon">◈</span> Troubleshooting</a>
+
+        <div class="nav-section-label">Go Deeper</div>
+        <a href="#learning"><span class="nav-icon">◈</span> Learning Resources</a>
+
+      </nav>
+    </aside>
+
+    <!-- ─── MAIN ─── -->
+    <div class="main">
+
+      <!-- Top Banner -->
+      <div class="top-banner">
+        <div class="top-banner-watermark">α</div>
+        <div class="top-banner-inner">
+          <div class="banner-eyebrow"><span>Internal Documentation</span></div>
+          <h1 class="banner-title">Website Maintainer<br>Handbook</h1>
+          <p class="banner-desc">A complete guide to maintaining, updating, and troubleshooting the official Gamma Iota Lambda Chapter website — written for whoever holds the torch next.</p>
+          <div class="banner-meta">
+            <div class="meta-chip">Site: gil1906.org</div>
+            <div class="meta-chip">GitHub: Gamma-Iota-Lambda/brooklyn-alphas</div>
+            <div class="meta-chip">Updated March 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="content-area">
+
+        <!-- ═══════════════════════════════ SECTION 1 ═══ -->
+        <div class="doc-section">
+          <span id="overview" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">01</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Getting Started</div>
+              <h2 class="section-title">Overview</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>The Gamma Iota Lambda Chapter website is a <strong>static HTML website</strong>. That means there is no WordPress, no Squarespace dashboard, no database, and no software to log into. The entire site is made up of plain text files — specifically <code>.html</code>, <code>.css</code>, and a single shared <code>style.css</code> — that GitHub serves directly to visitors.</p>
+            <p>If you've never maintained a website before, here is the core idea: <strong>to change what people see on the site, you edit the text files and push them to GitHub.</strong> GitHub Pages (a free hosting service) automatically publishes whatever is in the <code>brooklyn-alphas</code> repository.</p>
+          </div>
+
+          <div class="callout">
+            <div class="callout-label">Key Principle</div>
+            This site has no "admin panel." Every change — updating board members, adding event photos, changing text — is made by editing the actual code files. This sounds technical, but most updates follow simple, repeatable patterns that are fully documented here.
+          </div>
+
+          <div class="prose">
+            <p><strong>What the site does:</strong></p>
+          </div>
+
+          <div class="term-list">
+            <div class="term-item">
+              <div class="term-key">Homepage</div>
+              <div class="term-val">Hero section, chapter intro, programs overview, meetings info, contact form, and Substack newsletter embed.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Executive Board</div>
+              <div class="term-val">Headshot grid of the current term's board members with names and roles.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Events</div>
+              <div class="term-val">Photo carousels for recent chapter events, loaded automatically from photo folders.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Alpha Academy</div>
+              <div class="term-val">Program description for the chapter's signature youth leadership initiative.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Scholarship</div>
+              <div class="term-val">Judge Myles A. Paige Scholarship info, application link, and deadline.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Histories</div>
+              <div class="term-val">Full chapter history (with timeline) and Alpha Phi Alpha fraternity history.</div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 2 ═══ -->
+        <div class="doc-section">
+          <span id="site-structure" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">02</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Getting Started</div>
+              <h2 class="section-title">Site Structure</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>All files live in a single GitHub repository. Here is what the top level looks like and what each file is for:</p>
+          </div>
+
+          <div class="file-tree">
+<span class="ft-dir">brooklyn-alphas/</span>  <span class="ft-comment">← the entire website lives here</span>
+├── <span class="ft-file">index.html</span>          <span class="ft-comment">← Homepage</span>
+├── <span class="ft-file">events.html</span>         <span class="ft-comment">← Events & photo carousels</span>
+├── <span class="ft-file">executive-board.html</span> <span class="ft-comment">← Current board members</span>
+├── <span class="ft-file">chapter-history.html</span> <span class="ft-comment">← Chapter timeline & history</span>
+├── <span class="ft-file">fraternity-history.html</span>
+├── <span class="ft-file">alpha-academy.html</span>
+├── <span class="ft-file">scholarship.html</span>
+├── <span class="ft-file">recommended-readings.html</span>
+├── <span class="ft-file">impact-20.html</span>
+├── <span class="ft-file">404.html</span>            <span class="ft-comment">← "Page not found" page</span>
+├── <span class="ft-file">style.css</span>           <span class="ft-comment">← ALL shared styles</span>
+├── <span class="ft-file">sitemap.xml</span>         <span class="ft-comment">← Tells Google what pages exist</span>
+├── <span class="ft-file">robots.txt</span>         <span class="ft-comment">← Tells search crawlers what to index</span>
+├── <span class="ft-file">favicon.png</span>        <span class="ft-comment">← Browser tab icon</span>
+├── <span class="ft-file">og-image.jpg</span>       <span class="ft-comment">← Preview image for social shares</span>
+├── <span class="ft-file">gil-crest.png</span>      <span class="ft-comment">← Chapter crest logo</span>
+├── <span class="ft-file">compress.js</span>        <span class="ft-comment">← Image compression utility</span>
+├── <span class="ft-file">generate-manifests.js</span> <span class="ft-comment">← Events photo catalog utility</span>
+├── <span class="ft-dir">headshots/</span>          <span class="ft-comment">← Board member photos</span>
+│   ├── <span class="ft-file">robert-brissett.jpeg</span>
+│   └── <span class="ft-dim">... (one file per member)</span>
+└── <span class="ft-dir">assets/</span>             <span class="ft-comment">← Event photo galleries</span>
+    ├── <span class="ft-dir">mlk-2025/</span>
+    │   ├── <span class="ft-file">photos.json</span>   <span class="ft-comment">← Auto-generated photo index</span>
+    │   └── <span class="ft-dim">... photos ...</span>
+    └── <span class="ft-dir">roots-and-proofs-2026/</span>
+          </div>
+
+          <div class="callout tip">
+            <div class="callout-label">Rule of Thumb</div>
+            If you need to change what a page <em>says</em>, edit the <code>.html</code> file for that page. If you need to change how something <em>looks</em> (colors, fonts, spacing), edit <code>style.css</code> — or the <code>&lt;style&gt;</code> block inside that page's <code>&lt;head&gt;</code>.
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 3 ═══ -->
+        <div class="doc-section">
+          <span id="tools" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">03</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Getting Started</div>
+              <h2 class="section-title">Tools You Need</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>Before you can make and publish changes, you need a few things set up on your computer. You only need to do this once.</p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>A GitHub account.</strong> Create one at <em>github.com</em> if you don't have one. Then ask the current webmaster to add you as a collaborator on the <code>Gamma-Iota-Lambda/brooklyn-alphas</code> repository.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Git.</strong> This is the software that syncs files between your computer and GitHub. Download from <em>git-scm.com</em>. On a Mac, you may already have it — type <code>git --version</code> in your Terminal to check.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>A code editor.</strong> <em>Visual Studio Code</em> (VS Code) is free and the most beginner-friendly option. Download from <em>code.visualstudio.com</em>. It gives you color-coded HTML, a built-in file explorer, and a terminal — everything in one place.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>Clone the repository.</strong> Open your Terminal (Mac) or Command Prompt (Windows), navigate to where you want the files, and run:<br><br><code>git clone https://github.com/Gamma-Iota-Lambda/brooklyn-alphas.git</code><br><br>This downloads the entire site to a folder called <code>brooklyn-alphas</code> on your machine.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-content"><strong>Node.js (for image tools only).</strong> If you plan to add event photos or compress images, install Node.js from <em>nodejs.org</em>. Then inside the project folder, run <code>npm install</code> to set up the helper scripts. You can skip this step if you're only making text edits.</div>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>Once cloned, open the <code>brooklyn-alphas</code> folder in VS Code. You'll see the full file list on the left side. Double-click any file to open and edit it.</p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 4 ═══ -->
+        <div class="doc-section">
+          <span id="content-edits" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">04</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Making Edits</div>
+              <h2 class="section-title">Editing Text & Content</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>All text on the site is written directly in HTML files. HTML uses <strong>tags</strong> — words wrapped in angle brackets like <code>&lt;p&gt;</code> and <code>&lt;h2&gt;</code> — to mark up content. You don't need to know how to build HTML from scratch; you just need to recognize the patterns and know how to change the text inside the tags.</p>
+            <p>Here are the tags you'll encounter most often:</p>
+          </div>
+
+          <div class="term-list">
+            <div class="term-item">
+              <div class="term-key"><code>&lt;p&gt;</code></div>
+              <div class="term-val">A paragraph of body text. Most of the readable content on each page is in <code>&lt;p&gt;</code> tags.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>&lt;h1&gt;</code> – <code>&lt;h3&gt;</code></div>
+              <div class="term-val">Headings of decreasing size. The big headline on a page is usually an <code>&lt;h1&gt;</code>.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>&lt;a href="..."&gt;</code></div>
+              <div class="term-val">A link. The URL goes inside the quotes after <code>href=</code>. The clickable text goes between the opening and closing tags.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>&lt;img src="..." alt="..."&gt;</code></div>
+              <div class="term-val">An image. The file path goes in <code>src=</code>. Always keep a meaningful description in <code>alt=</code> for accessibility.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>&lt;strong&gt;</code></div>
+              <div class="term-val">Bold text within a paragraph.</div>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p><strong>Example — changing a paragraph:</strong> Open <code>alpha-academy.html</code>, find the text you want to update using VS Code's Find feature (<code>Ctrl+F</code> / <code>Cmd+F</code>), and edit the text inside the <code>&lt;p&gt;</code> tags. Do not delete the opening <code>&lt;p&gt;</code> or closing <code>&lt;/p&gt;</code>.</p>
+          </div>
+
+          <div class="code-label">Before</div>
+          <pre><code><span class="c-tag">&lt;p&gt;</span>Alpha Academy is our Signature Leadership and College Readiness program.<span class="c-tag">&lt;/p&gt;</span></code></pre>
+
+          <div class="code-label">After</div>
+          <pre><code><span class="c-tag">&lt;p&gt;</span>Alpha Academy is our award-winning Leadership and College Readiness program.<span class="c-tag">&lt;/p&gt;</span></code></pre>
+
+          <div class="callout warn">
+            <div class="callout-label">Important</div>
+            Always change only the <em>text content</em> between tags — never delete or modify the tags themselves or the class names, IDs, or attributes on them, unless you specifically know what they do. If you break a tag, the page may display incorrectly.
+          </div>
+
+          <div class="prose">
+            <p><strong>Using Find & Replace in VS Code:</strong> Press <code>Ctrl+H</code> (Windows) or <code>Cmd+H</code> (Mac) to open the Find & Replace panel. Type the old text in the top box and the new text in the bottom box. This is especially useful for updating things like a year across the whole file.</p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 5 ═══ -->
+        <div class="doc-section">
+          <span id="navigation" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">05</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Making Edits</div>
+              <h2 class="section-title">The Navigation</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>Every page has the same navigation bar at the top, and a mobile menu that appears on small screens. <strong>If you add a new page or change a link label, you must update the nav on every single page</strong> — because each HTML file has its own copy of the nav.</p>
+            <p>The nav is organized into <strong>grouped dropdowns</strong>. Here is the current structure:</p>
+          </div>
+
+          <div class="term-list">
+            <div class="term-item">
+              <div class="term-key">About</div>
+              <div class="term-val">Jumps to the about section on the homepage (<code>#about</code>).</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">History ▾</div>
+              <div class="term-val">Dropdown: Full Chapter History, Fraternity History</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Chapter ▾</div>
+              <div class="term-val">Dropdown: Executive Board, Meetings</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Programs & Initiatives ▾</div>
+              <div class="term-val">Dropdown: Alpha Academy, Impact $20</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Scholarship ▾</div>
+              <div class="term-val">Dropdown: Scholarship, Recommended Readings</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Events</div>
+              <div class="term-val">Direct link to <code>events.html</code> — highlighted gold.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Contact</div>
+              <div class="term-val">Jumps to the contact section on the homepage (<code>#contact</code>).</div>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p><strong>How dropdown menus work in HTML:</strong> Each dropdown is a list item (<code>&lt;li class="nav-dropdown"&gt;</code>) that contains a nested <code>&lt;ul class="nav-dropdown-menu"&gt;</code> with the sub-links inside. The CSS in <code>style.css</code> handles showing and hiding the dropdown on hover.</p>
+          </div>
+
+          <div class="code-label">Dropdown structure (desktop nav)</div>
+          <pre><code><span class="c-tag">&lt;li</span> <span class="c-attr">class</span>=<span class="c-val">"nav-dropdown"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"#history"</span><span class="c-tag">&gt;</span>History &amp;#9662;<span class="c-tag">&lt;/a&gt;</span>  <span class="c-comment">&lt;!-- &#9662; is the ▾ arrow --&gt;</span>
+  <span class="c-tag">&lt;ul</span> <span class="c-attr">class</span>=<span class="c-val">"nav-dropdown-menu"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;li&gt;&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"chapter-history.html"</span><span class="c-tag">&gt;</span>Full Chapter History<span class="c-tag">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="c-tag">&lt;li&gt;&lt;a</span> <span class="c-attr">href</span>=<span class="c-val">"fraternity-history.html"</span><span class="c-tag">&gt;</span>Fraternity History<span class="c-tag">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="c-tag">&lt;/ul&gt;</span>
+<span class="c-tag">&lt;/li&gt;</span></code></pre>
+
+          <div class="callout warn">
+            <div class="callout-label">Critical</div>
+            The site has <strong>two navs per page</strong> — a desktop nav (<code class="c-muted">class="nav-links"</code>) and a mobile nav (<code class="c-muted">id="mobile-menu"</code>). Any change to the navigation must be made in <strong>both</strong>, and on <strong>every</strong> HTML page. Use VS Code's multi-file search (<code>Ctrl+Shift+F</code>) to find and update all instances at once.
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 6 ═══ -->
+        <div class="doc-section">
+          <span id="styling" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">06</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Making Edits</div>
+              <h2 class="section-title">Styling & CSS</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>All visual design — colors, fonts, spacing, layout — is controlled by CSS (Cascading Style Sheets). The site uses a <strong>single shared stylesheet</strong> called <code>style.css</code> in the root of the repo, plus small <code>&lt;style&gt;</code> blocks inside each page's <code>&lt;head&gt;</code> for page-specific styles.</p>
+            <p><strong>Where to edit:</strong> If a change should affect every page (nav, footer, buttons, base typography), edit <code>style.css</code>. If it only affects one page, edit the <code>&lt;style&gt;</code> block in that page's <code>&lt;head&gt;</code>.</p>
+            <p><strong>CSS Variables</strong> — The site uses a system of design tokens defined at the top of <code>style.css</code>. Instead of hardcoding color values everywhere, any element that uses gold references <code>var(--gold)</code>. This means changing the brand gold color is a one-line edit:</p>
+          </div>
+
+          <div class="code-label">style.css — Color variables (top of file)</div>
+          <pre><code><span class="c-comment">/* ─── VARIABLES ─── */</span>
+:root {
+  <span class="c-attr">--gold</span>:        <span class="c-val">#B8860B</span>;   <span class="c-comment">/* primary gold — used for accents */</span>
+  <span class="c-attr">--gold-bright</span>: <span class="c-val">#D4A017</span>;   <span class="c-comment">/* brighter gold — buttons, highlights */</span>
+  <span class="c-attr">--gold-light</span>:  <span class="c-val">#FAF0BE</span>;   <span class="c-comment">/* pale gold — rarely used */</span>
+  <span class="c-attr">--black</span>:       <span class="c-val">#0A0A0A</span>;   <span class="c-comment">/* near-black background */</span>
+  <span class="c-attr">--black-soft</span>:  <span class="c-val">#111111</span>;   <span class="c-comment">/* slightly lighter background */</span>
+  <span class="c-attr">--white</span>:       <span class="c-val">#FFFFFF</span>;
+  <span class="c-attr">--brown-deep</span>:  <span class="c-val">#7E4300</span>;   <span class="c-comment">/* warm brown — rare accent */</span>
+}</code></pre>
+
+          <div class="prose">
+            <p><strong>Fonts</strong> — The site uses three typefaces, all loaded from Google Fonts:</p>
+          </div>
+
+          <div class="term-list">
+            <div class="term-item">
+              <div class="term-key">Playfair Display</div>
+              <div class="term-val">Serif — used for large display headings, hero titles, section names.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Barlow Condensed</div>
+              <div class="term-val">Condensed sans — used for labels, eyebrows, nav links, buttons, uppercase small text.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key">Barlow</div>
+              <div class="term-val">Regular sans — used for body copy, paragraphs, general text.</div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-label">Tip</div>
+            The <code>style.css</code> file is 1,471 lines long. Use <code>Ctrl+F</code> in VS Code to search for the class name you want to change, rather than scrolling through the whole file. Comments like <code>/* ─── NAV ─── */</code> throughout the file act as labeled sections to help you navigate.
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 7 ═══ -->
+        <div class="doc-section">
+          <span id="exec-board" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">07</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Making Edits</div>
+              <h2 class="section-title">Executive Board</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>The Executive Board page (<code>executive-board.html</code>) is one of the most commonly updated pages — it changes every fraternal year. Here is exactly what to update and where to find it.</p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Update the term year.</strong> Search the file for the year range (e.g. <code>2025–2026</code>) and replace it with the new term. This appears in the page title, the hero subtitle, the <code>&lt;title&gt;</code> tag, and the meta description.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Update member cards.</strong> Each board member has an <code>eb-card</code> block in the HTML. Find the card for each person and update the name, role, and headshot <code>src</code> attribute.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Add headshots.</strong> Crop each photo to a square (1:1), compress it (see Section 11), name it <code>firstname-lastname.jpg</code>, and place it in the <code>headshots/</code> folder.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>Update the JSON-LD block.</strong> Near the top of the file, inside a <code>&lt;script type="application/ld+json"&gt;</code> block, there is a structured data listing of all members. Update this to match the new board. This is used by search engines.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-content"><strong>Update <code>sitemap.xml</code>.</strong> Change the <code>&lt;lastmod&gt;</code> date for the executive board entry to today's date in <code>YYYY-MM-DD</code> format.</div>
+            </div>
+          </div>
+
+          <div class="code-label">Member card with photo</div>
+          <pre><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card reveal"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card-img-wrap"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;img</span> <span class="c-attr">src</span>=<span class="c-val">"headshots/robert-brissett.jpeg"</span>
+         <span class="c-attr">alt</span>=<span class="c-val">"Robert Brissett, President"</span>
+         <span class="c-attr">loading</span>=<span class="c-val">"lazy"</span> <span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card-name"</span><span class="c-tag">&gt;</span>Robert Brissett<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card-role"</span><span class="c-tag">&gt;</span>President<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre>
+
+          <div class="code-label">Member card without photo (placeholder)</div>
+          <pre><code><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card reveal"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card-img-wrap placeholder"</span><span class="c-tag">&gt;</span>  <span class="c-comment">&lt;!-- note: "placeholder" class --&gt;</span>
+    <span class="c-tag">&lt;img</span> <span class="c-attr">src</span>=<span class="c-val">"gil-crest.png"</span> <span class="c-attr">alt</span>=<span class="c-val">""</span> <span class="c-attr">aria-hidden</span>=<span class="c-val">"true"</span> <span class="c-tag">/&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card-name"</span><span class="c-tag">&gt;</span>Brother Name<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"eb-card-role"</span><span class="c-tag">&gt;</span>Role<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></code></pre>
+
+          <div class="callout tip">
+            <div class="callout-label">Note on Members with Two Roles</div>
+            If a Brother holds two positions (e.g., Farid Adenuga), they appear as a single card with both roles listed in the <code>eb-card-role</code> div, separated by a line break or slash — not as two separate cards.
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 8 ═══ -->
+        <div class="doc-section">
+          <span id="headshots" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">08</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Making Edits</div>
+              <h2 class="section-title">Headshots & Photos</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>All board member headshots live in the <code>headshots/</code> folder. The naming convention is <code>firstname-lastname.jpg</code> (all lowercase, hyphen-separated). Some existing files use <code>.jpeg</code> instead — preserve the extension exactly when referencing them in HTML.</p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Crop to square.</strong> Every headshot should be cropped to a 1:1 (square) aspect ratio before uploading. The subject's face should be centered with some breathing room above the head. Minimum size: 400×400px. A free tool for this is <em>squoosh.app</em> or Canva's crop tool.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Compress the file.</strong> Target under 100KB per headshot. Use <em>squoosh.app</em> to compress manually, or use the <code>compress.js</code> script (see Section 11) to batch-compress all headshots at once.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Name it correctly.</strong> Use the format <code>firstname-lastname.jpg</code> — lowercase, hyphens, no spaces. Example: <code>andre-mckenzie.jpg</code>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>Drop it in <code>headshots/</code>.</strong> Copy the file into the <code>headshots/</code> folder in your local repo.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-content"><strong>Update the card in <code>executive-board.html</code>.</strong> Find the relevant <code>eb-card</code> block, update the <code>src</code> to the new filename, and remove the <code>placeholder</code> class from the <code>eb-card-img-wrap</code> div if it was previously a placeholder.</div>
+            </div>
+          </div>
+
+          <table class="doc-table">
+            <thead>
+              <tr><th>Member</th><th>File</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Robert Brissett</td><td><code>robert-brissett.jpeg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Lucien Allen</td><td><code>lucien-allen.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>David Williams</td><td><code>david-williams.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Sherron Cloyd</td><td><code>sherron-cloyd.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Dwane Omar Jones</td><td><code>dwane-omar-jones.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Andre McKenzie</td><td><code>andre-mckenzie.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Eugene Aiken</td><td><code>eugene-aiken.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Jessy Dwyer</td><td><code>jessy-dwyer.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>David Brown</td><td><code>david-brown.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Eric Davis</td><td><code>eric-davis.jpeg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Farid Adenuga</td><td><code>farid-adenuga.jpg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Bryce Tarrant</td><td><code>bryce-tarrant.jpeg</code></td><td class="status-ok">✓ Active</td></tr>
+              <tr><td>Daniel Williams</td><td>—</td><td class="status-warn">⚠ No photo — shows crest</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 9 ═══ -->
+        <div class="doc-section">
+          <span id="events" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">09</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Events & Media</div>
+              <h2 class="section-title">Events Page</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>The events page (<code>events.html</code>) displays photo carousels for recent chapter events. Each event gets its own section with a photo carousel, title, date, and description.</p>
+            <p>Events are organized in the <code>assets/</code> folder. Each event has its own subfolder containing all of its photos plus a <code>photos.json</code> manifest file that the page uses to automatically load and display them.</p>
+          </div>
+
+          <div class="code-label">How the assets/ folder is organized</div>
+          <div class="file-tree">
+<span class="ft-dir">assets/</span>
+├── <span class="ft-dir">mlk-2025/</span>           <span class="ft-comment">← MLK Day of Service 2025</span>
+│   ├── <span class="ft-file">photos.json</span>     <span class="ft-comment">← auto-generated index of photos</span>
+│   ├── <span class="ft-file">photo-001.jpg</span>
+│   └── <span class="ft-file">photo-002.jpg</span>
+├── <span class="ft-dir">roots-and-proofs-2026/</span>
+│   ├── <span class="ft-file">photos.json</span>
+│   └── <span class="ft-dim">... photos ...</span>
+└── <span class="ft-dir">chapter-life/</span>
+          </div>
+
+          <div class="prose">
+            <p><strong>To add a new event:</strong></p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Create a folder in <code>assets/</code>.</strong> Name it in lowercase with hyphens, using the event name and year: <code>chapter-picnic-2026</code>, <code>step-show-2026</code>, etc. The folder name becomes the event ID referenced in the HTML.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Add photos to the folder.</strong> Compress them first (see Section 11). Name them sequentially for best display order: <code>photo-001.jpg</code>, <code>photo-002.jpg</code>, etc.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Generate the manifest.</strong> Open a Terminal in the repo folder and run: <code>node generate-manifests.js</code>. This scans every event folder and creates a <code>photos.json</code> file in each one. To generate just one event: <code>node generate-manifests.js chapter-picnic-2026</code>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>Add an event section in <code>events.html</code>.</strong> Copy an existing event block (an <code>ev-event</code> div) and update the event title, date, description, and the <code>data-event</code> attribute to match your new folder name.</div>
+            </div>
+          </div>
+
+          <div class="code-label">Event section template in events.html</div>
+          <pre><code><span class="c-tag">&lt;section</span> <span class="c-attr">class</span>=<span class="c-val">"ev-event"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"ev-event-meta"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"ev-event-title"</span><span class="c-tag">&gt;</span>Chapter Picnic 2026<span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"ev-event-date"</span><span class="c-tag">&gt;</span>July 12, 2026<span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;p</span> <span class="c-attr">class</span>=<span class="c-val">"ev-event-desc"</span><span class="c-tag">&gt;</span>Brothers and families gathered ...<span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"ev-carousel"</span> <span class="c-attr">data-carousel</span>
+       <span class="c-attr">data-event</span>=<span class="c-val">"chapter-picnic-2026"</span><span class="c-tag">&gt;</span>  <span class="c-comment">&lt;!-- must match folder name --&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"ev-carousel-stage"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"ev-carousel-caption"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"ev-caption-text"</span><span class="c-tag">&gt;&lt;/span&gt;</span>
+      <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"ev-carousel-controls"</span><span class="c-tag">&gt;</span>
+        <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"ev-prev"</span><span class="c-tag">&gt;</span>‹<span class="c-tag">&lt;/button&gt;</span>
+        <span class="c-tag">&lt;span</span><span class="c-tag">&gt;&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"ev-current"</span><span class="c-tag">&gt;</span>1<span class="c-tag">&lt;/span&gt;</span> / <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-val">"ev-total"</span><span class="c-tag">&gt;&lt;/span&gt;&lt;/span&gt;</span>
+        <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"ev-next"</span><span class="c-tag">&gt;</span>›<span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/section&gt;</span></code></pre>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 10 ═══ -->
+        <div class="doc-section">
+          <span id="carousels" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">10</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Events & Media</div>
+              <h2 class="section-title">Photo Carousels</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>The photo carousels on <code>events.html</code> are <strong>manifest-driven</strong> — meaning the page doesn't have photos hardcoded in the HTML. Instead, when the page loads, it reads the <code>photos.json</code> file from each event folder and builds the carousel dynamically from that list.</p>
+            <p>The <code>photos.json</code> file looks like this:</p>
+          </div>
+
+          <div class="code-label">Example: assets/mlk-2025/photos.json</div>
+          <pre><code>{
+  <span class="c-attr">"event"</span>: <span class="c-val">"mlk-2025"</span>,
+  <span class="c-attr">"count"</span>: 3,
+  <span class="c-attr">"photos"</span>: [
+    { <span class="c-attr">"file"</span>: <span class="c-val">"photo-001.jpg"</span>, <span class="c-attr">"caption"</span>: <span class="c-val">"Brothers preparing meal bags"</span> },
+    { <span class="c-attr">"file"</span>: <span class="c-val">"photo-002.jpg"</span>, <span class="c-attr">"caption"</span>: <span class="c-val">"Distribution at Atlantic Men's Shelter"</span> },
+    { <span class="c-attr">"file"</span>: <span class="c-val">"photo-003.jpg"</span>, <span class="c-attr">"caption"</span>: <span class="c-val">"Chapter photo after the event"</span> }
+  ]
+}</code></pre>
+
+          <div class="prose">
+            <p><strong>Adding captions:</strong> After running <code>node generate-manifests.js</code>, open each <code>photos.json</code> file and fill in the <code>"caption"</code> fields. They default to empty strings. Re-running the manifest generator will <em>preserve</em> any captions you have already written — it only adds new photos, it doesn't overwrite.</p>
+            <p><strong>Carousel behavior:</strong> Carousels auto-advance every 4 seconds. They pause when hovered, focused with a keyboard, or scrolled out of view. Visitors can also swipe left/right on mobile, use the prev/next buttons, or click the thumbnail strip. They are fully keyboard-accessible.</p>
+          </div>
+
+          <div class="callout tip">
+            <div class="callout-label">Photo Tips</div>
+            Portrait-oriented photos (taller than wide) use <code>object-fit: contain</code> to avoid cropping. Landscape photos fill the frame with <code>object-fit: cover</code>. Either orientation works, but a consistent orientation per event looks best.
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 11 ═══ -->
+        <div class="doc-section">
+          <span id="image-compression" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">11</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Events & Media</div>
+              <h2 class="section-title">Image Compression</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>Large uncompressed images slow down the site significantly. The repo includes a script called <code>compress.js</code> that automatically compresses all images using a tool called <code>sharp</code>. Before running it, you need Node.js installed (see Section 3).</p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Install dependencies (first time only).</strong> In a Terminal, navigate to the repo folder and run: <code>npm install</code>. This installs <code>sharp</code>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Run the compressor.</strong> To compress everything: <code>node compress.js</code>. To compress a single folder only: <code>node compress.js headshots/</code> or <code>node compress.js assets/mlk-2025/</code>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Check the output.</strong> The script prints a table showing the original size, compressed size, and % reduction for each file. It automatically backs up originals to an <code>originals/</code> subfolder inside each directory before compressing — so you can always recover them.</div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-label">What It Does</div>
+            The script compresses JPGs and PNGs to 82% quality (a sweet spot where quality loss is invisible) and caps maximum image width at 1,600px. <code>originals/</code> backup folders are excluded from Git (via <code>.gitignore</code>), so they stay on your machine but don't bloat the repository.
+          </div>
+
+          <div class="prose">
+            <p><strong>Manual alternative:</strong> If you don't have Node.js, you can compress individual images at <em>squoosh.app</em> in a browser. Use the MozJPEG encoder at 80–85% quality, or OxiPNG for PNG files.</p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 12 ═══ -->
+        <div class="doc-section">
+          <span id="third-party" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">12</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Services & SEO</div>
+              <h2 class="section-title">Third-Party Services</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>The site uses several external services for analytics, forms, newsletters, and search indexing. Here is a reference guide for each one.</p>
+          </div>
+
+          <div class="service-grid">
+            <div class="service-card">
+              <div class="service-name">Google Analytics</div>
+              <div class="service-desc">Tracks site traffic, page views, and visitor behavior. The tracking snippet is in the <code>&lt;head&gt;</code> of every page. Measurement ID: <code>G-4YESGMG3TC</code>.</div>
+              <a class="service-link" href="https://analytics.google.com" target="_blank">analytics.google.com →</a>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Formspree</div>
+              <div class="service-desc">Handles the contact form on the homepage. Form submissions arrive via email. Form ID: <code>xvzbvwgy</code>. To change the notification email, log into Formspree.</div>
+              <a class="service-link" href="https://formspree.io" target="_blank">formspree.io →</a>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Google Search Console</div>
+              <div class="service-desc">Monitors how the site appears in Google search results. The sitemap (<code>sitemap.xml</code>) is submitted here. Use this to check indexing status and fix any crawl errors.</div>
+              <a class="service-link" href="https://search.google.com/search-console" target="_blank">search.google.com →</a>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Substack</div>
+              <div class="service-desc">Hosts the chapter newsletter. Embedded on <code>index.html</code> via an iframe. To write and send newsletters, log in to the Substack account directly.</div>
+              <a class="service-link" href="https://gil1906.substack.com" target="_blank">gil1906.substack.com →</a>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Namecheap</div>
+              <div class="service-desc">Manages the <code>gil1906.org</code> domain name registration and DNS settings. Log in here to renew the domain or update where it points.</div>
+              <a class="service-link" href="https://namecheap.com" target="_blank">namecheap.com →</a>
+            </div>
+            <div class="service-card">
+              <div class="service-name">Zeffy</div>
+              <div class="service-desc">Used for event ticketing and photo gallery distribution. Not embedded in the main site code — managed separately per event.</div>
+              <a class="service-link" href="https://zeffy.com" target="_blank">zeffy.com →</a>
+            </div>
+          </div>
+
+          <div class="callout warn">
+            <div class="callout-label">Access Credentials</div>
+            Login credentials for these services are not stored in the GitHub repository. Ensure the incoming webmaster is given access to each account during the transition — especially Google Analytics, Formspree, and Namecheap. Losing access to Namecheap could take the site offline if the domain expires.
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 13 ═══ -->
+        <div class="doc-section">
+          <span id="seo" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">13</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Services & SEO</div>
+              <h2 class="section-title">SEO & Meta Tags</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>SEO (Search Engine Optimization) is how the site gets found on Google. Every page is set up with a full suite of meta tags. When you add a new page or significantly update an existing one, you should update these tags to keep them accurate.</p>
+            <p>Each page's <code>&lt;head&gt;</code> contains the following tags you may need to update:</p>
+          </div>
+
+          <div class="term-list">
+            <div class="term-item">
+              <div class="term-key"><code>&lt;title&gt;</code></div>
+              <div class="term-val">The browser tab title and the blue headline in Google search results. Keep it under 60 characters. Include the page topic and "Gamma Iota Lambda."</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>meta description</code></div>
+              <div class="term-val">The snippet of text shown under the title in Google results. Keep it under 155 characters. Write it like a one-sentence summary for a human reader.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>link rel="canonical"</code></div>
+              <div class="term-val">Tells Google the definitive URL for this page. Must match the actual URL exactly, e.g. <code>https://www.gil1906.org/scholarship.html</code>.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>og:title</code>, <code>og:description</code></div>
+              <div class="term-val">The title and description used when the page is shared on Facebook, LinkedIn, iMessage, etc. Can differ slightly from the <code>&lt;title&gt;</code> and meta description.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>og:image</code></div>
+              <div class="term-val">The preview image shown in social shares. Points to <code>og-image.jpg</code> by default. The ideal size for this image is 1200×630px.</div>
+            </div>
+            <div class="term-item">
+              <div class="term-key"><code>sitemap.xml</code></div>
+              <div class="term-val">A list of all URLs on the site, submitted to Google. Update the <code>&lt;lastmod&gt;</code> date whenever a page changes, and add a new <code>&lt;url&gt;</code> entry whenever you add a new page.</div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-label">Adding a New Page</div>
+            When adding a brand new page to the site: (1) copy the full <code>&lt;head&gt;</code> section from an existing page, (2) update every meta tag to reflect the new page, (3) add the page to the nav on every existing page, (4) add a <code>&lt;url&gt;</code> entry in <code>sitemap.xml</code>.
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 14 ═══ -->
+        <div class="doc-section">
+          <span id="deployment" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">14</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Deployment</div>
+              <h2 class="section-title">Publishing Changes</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>Publishing changes to the live site is done through Git and a short GitHub review process. Because the <code>main</code> branch is protected — meaning no one can push directly to it — every change goes through a <strong>Pull Request (PR)</strong>. Think of it as a built-in second pair of eyes before anything goes live.</p>
+            <p>The workflow is: <strong>pull latest → create a branch → edit files → commit → push branch → open a PR on GitHub → get it merged</strong>. It sounds like more steps than it is — once you've done it once, it takes about two extra minutes.</p>
+          </div>
+
+          <div class="callout">
+            <div class="callout-label">What is a branch?</div>
+            A branch is your own private copy of the codebase to work in. Think of <code>main</code> as the published, official version of the site. When you create a branch, you're saying "I want to make some changes without touching the live site yet." Your branch is invisible to visitors. Only when your branch is reviewed and merged into <code>main</code> does anything change on the live site. If something goes wrong on your branch, <code>main</code> is untouched.
+          </div>
+
+          <div class="prose">
+            <p><strong>Step-by-step: the full publish workflow</strong></p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content"><strong>Pull the latest version of <code>main</code>.</strong> Before you start any work, make sure your local copy is up to date. This prevents conflicts if someone else made a change since you last worked on the site.<br><br><code>git checkout main</code><br><code>git pull</code></div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content"><strong>Create a new branch.</strong> Name it something short and descriptive. Use lowercase and hyphens.<br><br><code>git checkout -b update/exec-board-2026-2027</code><br><br>You are now on your new branch. Any changes you make stay here until you open a PR.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content"><strong>Make your edits.</strong> Open files in VS Code and make your changes as normal. Preview them in a browser by dragging the HTML file into a browser window (or right-click → Open With → Browser) before moving on.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content"><strong>Stage and commit your changes.</strong><br><br><code>git add .</code><br><code>git commit -m "update: exec board 2026-2027 term"</code><br><br>You can make multiple commits on the same branch as you work — each commit is a saved checkpoint.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-content"><strong>Push your branch to GitHub.</strong> The first time you push a new branch, use the full command:<br><br><code>git push -u origin update/exec-board-2026-2027</code><br><br>After the first push, you can just use <code>git push</code> for any additional commits on that same branch.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">6</div>
+              <div class="step-content"><strong>Open a Pull Request on GitHub.</strong> After pushing, go to <a class="prose" href="https://github.com/Gamma-Iota-Lambda/brooklyn-alphas" target="_blank">github.com/Gamma-Iota-Lambda/brooklyn-alphas</a>. GitHub will show a yellow banner saying your branch was recently pushed — click <strong>"Compare & pull request."</strong> Add a short description of what you changed and click <strong>"Create pull request."</strong></div>
+            </div>
+            <div class="step">
+              <div class="step-num">7</div>
+              <div class="step-content"><strong>Wait for review and merge.</strong> Someone with write access to <code>main</code> will review the PR and merge it. Once merged, GitHub Pages automatically rebuilds the site. Changes are typically live within 1–3 minutes of the merge.</div>
+            </div>
+          </div>
+
+          <div class="code-label">Terminal — complete publish workflow at a glance</div>
+          <pre><code><span class="c-comment"># Start: make sure you're on main and up to date</span>
+git checkout main
+git pull
+
+<span class="c-comment"># Create and switch to a new branch</span>
+git checkout -b update/exec-board-2026-2027
+
+<span class="c-comment"># ... make your edits in VS Code ...</span>
+
+<span class="c-comment"># Check what you changed</span>
+git status
+
+<span class="c-comment"># Stage everything and commit</span>
+git add .
+git commit -m <span class="c-val">"update: exec board 2026-2027 term"</span>
+
+<span class="c-comment"># Push your branch (first time on this branch)</span>
+git push -u origin update/exec-board-2026-2027
+
+<span class="c-comment"># Then open a Pull Request on GitHub — see Step 6 above</span></code></pre>
+
+          <div class="callout tip">
+            <div class="callout-label">Branch Naming Convention</div>
+            Name branches after what they do. Good patterns: <code>update/exec-board-2027</code>, <code>feat/chapter-picnic-photos</code>, <code>fix/scholarship-deadline</code>. Keep them lowercase with hyphens. Use a prefix (<code>update/</code>, <code>feat/</code>, <code>fix/</code>) that matches your commit message prefix.
+          </div>
+
+          <div class="callout tip">
+            <div class="callout-label">Commit Message Convention</div>
+            The project uses the prefix <code>feat:</code> for new content, <code>fix:</code> for corrections, and <code>update:</code> for routine updates. Good examples: <code>"feat: add chapter picnic 2026 event photos"</code>, <code>"fix: correct scholarship deadline date"</code>, <code>"update: exec board 2026-2027"</code>.
+          </div>
+
+          <div class="callout warn">
+            <div class="callout-label">Before You Push</div>
+            Always preview the changed page in your browser before pushing. Catching a broken tag locally is much easier than reverting a PR after the fact.
+          </div>
+
+          <div class="prose">
+            <p><strong>If you accidentally break something:</strong> If you haven't pushed yet, run <code>git checkout -- filename.html</code> to restore that file to its last committed state. If you've already pushed but the PR hasn't been merged, you can push a correcting commit to the same branch — it will update the PR automatically. If the PR has already been merged, contact whoever manages the repo to revert the merge.</p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 15 ═══ -->
+        <div class="doc-section">
+          <span id="annual" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">15</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Deployment</div>
+              <h2 class="section-title">Annual Update Checklist</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>At the start of each new fraternal year (typically around August–September), here is a complete list of updates to make across the site:</p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>Executive Board page</strong> — new term year in title/subtitle, new member cards, new headshots, updated JSON-LD structured data.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>Scholarship page</strong> — updated year in title and heading, new application deadline date, updated essay prompt if changed, new Google Form URL if changed, updated JSON-LD <code>applicationDeadline</code> field.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>Homepage meetings section</strong> — verify meeting location, time, and date range are still accurate.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>Homepage contact section</strong> — verify email addresses are current.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>sitemap.xml</strong> — update <code>&lt;lastmod&gt;</code> dates for any pages that were changed.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>Domain renewal</strong> — check Namecheap to confirm <code>gil1906.org</code> is set to auto-renew, or renew manually. A lapsed domain takes the entire site offline.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>Google Analytics</strong> — review the previous year's traffic data. Note any high-traffic pages or search queries to guide future content priorities.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">✓</div>
+              <div class="step-content"><strong>Events page</strong> — archive or remove outdated event sections if the page is getting long. There is no rule on how many events to show — use judgment based on what's relevant to current visitors.</div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 16 ═══ -->
+        <div class="doc-section">
+          <span id="troubleshooting" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">16</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Deployment</div>
+              <h2 class="section-title">Troubleshooting</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>Common issues and how to fix them:</p>
+          </div>
+
+          <div class="trouble-item">
+            <div class="trouble-q">A headshot isn't showing up — I just see the chapter crest placeholder.</div>
+            <div class="trouble-a">
+              Check three things: (1) The filename in the <code>&lt;img src="..."&gt;</code> attribute exactly matches the actual filename in <code>headshots/</code>, including the extension (<code>.jpg</code> vs <code>.jpeg</code>). File names are case-sensitive on the server. (2) The <code>placeholder</code> class is not present on the <code>eb-card-img-wrap</code> div — if it is, remove it. (3) The file was actually pushed to GitHub (run <code>git status</code> to check).
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <div class="trouble-q">An event carousel is empty — no photos appear.</div>
+            <div class="trouble-a">
+              The carousel reads from <code>assets/[event-name]/photos.json</code>. Check that: (1) the <code>data-event</code> attribute on the <code>.ev-carousel</code> div exactly matches the folder name in <code>assets/</code> — case matters. (2) <code>photos.json</code> exists in that folder — if not, run <code>node generate-manifests.js</code>. (3) The photos listed in <code>photos.json</code> actually exist in the folder. (4) All files were pushed to GitHub.
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <div class="trouble-q">I pushed a change but the site doesn't look different.</div>
+            <div class="trouble-a">
+              Your browser is likely showing a cached version of the page. Open the site in a private/incognito browser window, or do a hard refresh: <code>Ctrl+Shift+R</code> (Windows) / <code>Cmd+Shift+R</code> (Mac). Also check GitHub (go to the repo and look at the file) to confirm your push went through. GitHub Pages can sometimes take 1–3 minutes to update.
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <div class="trouble-q">The mobile menu isn't working or the page looks broken on mobile.</div>
+            <div class="trouble-a">
+              Open the browser's developer tools (F12 or right-click → Inspect) and check the Console tab for red error messages. Usually this means a JavaScript error caused by a mistyped tag or a missing closing tag somewhere in the HTML. The error message will tell you which line to look at. You can also use the validator at <em>validator.w3.org</em> — paste in the page's URL and it will highlight any broken HTML.
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <div class="trouble-q">I accidentally deleted a section of the page while editing.</div>
+            <div class="trouble-a">
+              If you haven't pushed the change yet, run <code>git checkout -- [filename]</code> in the Terminal to restore the file to its last committed state. This will discard all your local changes to that file, so make sure you've saved anything else you wanted to keep first. If you have already pushed, you can view the previous version of any file on GitHub by going to the file → clicking "History" → selecting the previous commit.
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <div class="trouble-q">The site is down or showing a GitHub 404 page.</div>
+            <div class="trouble-a">
+              Check the following: (1) Log into Namecheap and verify the domain is still active and pointing to GitHub Pages. (2) Go to the GitHub repo → Settings → Pages and confirm that GitHub Pages is enabled and the source branch is set to <code>main</code>. (3) Check if there's a red X on recent commits (visible on the repo's main page) indicating a deployment error — click it for details.
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <div class="trouble-q">The CSS looks wrong — colors, fonts, or layout are off.</div>
+            <div class="trouble-a">
+              Check the <code>style.css</code> file line count with <code>wc -l style.css</code> in the Terminal (should be ~1,471 lines). A significantly lower number suggests the file was accidentally truncated — restore from Git. Also check that the <code>&lt;link rel="stylesheet" href="style.css"&gt;</code> line is present in the <code>&lt;head&gt;</code> of the affected page and that the path is correct.
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- ═══════════════════════════════ SECTION 17 ═══ -->
+        <div class="doc-section">
+          <span id="learning" class="section-anchor"></span>
+          <div class="section-header">
+            <div class="section-num">17</div>
+            <div class="section-title-wrap">
+              <div class="section-label">Go Deeper</div>
+              <h2 class="section-title">Learning Resources</h2>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>You don't need to be a developer to maintain this site — but if you want to grow your skills and feel more confident making changes, these resources are genuinely worth your time. All of the free options below are high quality. Most people can get comfortable with the basics in a few dedicated weekends.</p>
+          </div>
+
+          <!-- HTML & CSS -->
+          <div style="margin-bottom:2.5rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-soft);">
+              <div style="font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); opacity:0.5; line-height:1;">I</div>
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:0.2rem;">Topic</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700; color:var(--white);">HTML & CSS</div>
+              </div>
+            </div>
+
+            <div class="prose">
+              <p>HTML and CSS are the building blocks of every page on this site. HTML defines what content is on the page (text, images, links). CSS controls what it looks like (colors, layout, fonts). You don't need to learn everything — just enough to read and modify existing code confidently.</p>
+            </div>
+
+            <table class="doc-table">
+              <thead><tr><th>Resource</th><th>Format</th><th>Why It's Good</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a class="prose" href="https://www.theodinproject.com/paths/foundations/courses/foundations" target="_blank">The Odin Project — Foundations</a></td>
+                  <td>Self-paced course</td>
+                  <td>Starts from zero. Covers HTML, CSS, and the command line in a logical order. Project-based — you build real things.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://developer.mozilla.org/en-US/docs/Learn/HTML" target="_blank">MDN Web Docs — HTML</a></td>
+                  <td>Reference + tutorials</td>
+                  <td>The authoritative reference for HTML and CSS. Intimidating at first, but once you're comfortable with the basics this is where you'll look things up for the rest of your career.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://www.freecodecamp.org/learn/2022/responsive-web-design/" target="_blank">freeCodeCamp — Responsive Web Design</a></td>
+                  <td>Interactive exercises</td>
+                  <td>Guided, browser-based exercises. No setup required — good if you want to practice writing HTML and CSS without installing anything first.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://css-tricks.com/guides/" target="_blank">CSS-Tricks — Guides</a></td>
+                  <td>Articles</td>
+                  <td>Deep dives on specific CSS topics (Flexbox, Grid, animations). Best used as a reference once you know enough to know what you're looking for.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="callout tip">
+              <div class="callout-label">Where to start</div>
+              If you're brand new, start with <strong>The Odin Project Foundations</strong>. It will take you from zero to a working understanding of HTML and CSS in a structured way, with projects that feel meaningful. Commit to 1–2 hours a day for a few weeks.
+            </div>
+          </div>
+
+          <!-- JavaScript -->
+          <div style="margin-bottom:2.5rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-soft);">
+              <div style="font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); opacity:0.5; line-height:1;">II</div>
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:0.2rem;">Topic</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700; color:var(--white);">JavaScript</div>
+              </div>
+            </div>
+
+            <div class="prose">
+              <p>JavaScript is the programming language of the web — it's what makes things interactive. On this site, it powers the nav behavior, the carousel slideshow logic, the mobile menu, and the scroll animations. You don't need to master JavaScript to maintain the site, but understanding the basics will help you read and debug the code in <code>events.html</code> and <code>index.html</code>.</p>
+            </div>
+
+            <table class="doc-table">
+              <thead><tr><th>Resource</th><th>Format</th><th>Why It's Good</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a class="prose" href="https://javascript.info/" target="_blank">javascript.info</a></td>
+                  <td>Free online book</td>
+                  <td>The clearest, most thorough JavaScript tutorial available. Starts from absolute basics and builds up methodically. The first few chapters (variables, functions, DOM basics) are all you need for this site.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://www.theodinproject.com/paths/foundations/courses/foundations#javascript-basics" target="_blank">The Odin Project — JS Basics</a></td>
+                  <td>Self-paced course</td>
+                  <td>Follows naturally from the HTML/CSS Foundations path. Covers the JS you'll actually use when working with a real website.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank">MDN — JavaScript Guide</a></td>
+                  <td>Reference</td>
+                  <td>Authoritative reference. Best for looking up specific things like how <code>querySelector</code> or <code>addEventListener</code> work — which you'll see frequently in this codebase.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Git & GitHub -->
+          <div style="margin-bottom:2.5rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-soft);">
+              <div style="font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); opacity:0.5; line-height:1;">III</div>
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:0.2rem;">Topic</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700; color:var(--white);">Git & GitHub</div>
+              </div>
+            </div>
+
+            <div class="prose">
+              <p>Git is <strong>version control</strong> — software that tracks every change ever made to every file in the project, who made it, and when. Think of it like a detailed "track changes" history for the entire codebase going back to the very beginning. You can view any file as it existed on any date, see exactly what changed between two versions, and restore anything that was accidentally deleted.</p>
+              <p><strong>GitHub</strong> is the website that hosts the repository online. Git is the tool running on your computer; GitHub is the shared server everyone syncs to. They are separate things that work together: you use Git commands in your Terminal, and those commands talk to GitHub.</p>
+              <p>A few core concepts worth understanding before diving into commands:</p>
+            </div>
+
+            <div class="term-list">
+              <div class="term-item">
+                <div class="term-key">Repository (repo)</div>
+                <div class="term-val">The project folder that Git is tracking. Everything inside <code>brooklyn-alphas/</code> is the repository. It contains all the site files plus a hidden <code>.git/</code> folder where Git stores its history — never delete that folder.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Commit</div>
+                <div class="term-val">A saved snapshot of the project at a specific moment. Every commit has a message describing what changed and is permanently recorded in the history. Think of commits like save points in a video game — you can always go back to any of them.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Branch</div>
+                <div class="term-val">A parallel version of the codebase where you can make changes without affecting the live site. <code>main</code> is the production branch — what visitors see. You create a new branch for each set of changes, work there safely, and merge it into <code>main</code> via a Pull Request when it's ready.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Pull Request (PR)</div>
+                <div class="term-val">A proposal to merge your branch into <code>main</code>. GitHub shows a diff — a side-by-side view of exactly what changed — so a reviewer can check the work before it goes live. This is the gate between your edits and the published site. The <code>main</code> branch on this repo is protected, meaning PRs must be approved before merging.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Staging area</div>
+                <div class="term-val">A holding area for changes you intend to include in your next commit. <code>git add .</code> moves all your changed files into the staging area. <code>git commit</code> then packages everything staged into a permanent snapshot.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Push / Pull</div>
+                <div class="term-val"><code>git push</code> uploads your local commits to GitHub. <code>git pull</code> downloads any commits on GitHub that you don't have locally yet. Always pull before starting work so you're starting from the latest version.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Merge conflict</div>
+                <div class="term-val">What happens when two people edit the same line of the same file at the same time and Git can't automatically decide which version to keep. Rare on a small project like this, but possible. VS Code has a built-in conflict resolver that highlights the two versions and lets you choose.</div>
+              </div>
+            </div>
+
+            <table class="doc-table">
+              <thead><tr><th>Resource</th><th>Format</th><th>Why It's Good</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a class="prose" href="https://www.youtube.com/watch?v=RGOj5yH7evk" target="_blank">Git and GitHub for Beginners — freeCodeCamp (YouTube)</a></td>
+                  <td>Video (1 hr)</td>
+                  <td>A single focused video that covers everything you need: cloning, staging, committing, pushing, and resolving simple conflicts. Watch once, take notes on the commands, and you'll have 90% of what you need.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://learngitbranching.js.org/" target="_blank">Learn Git Branching</a></td>
+                  <td>Interactive browser game</td>
+                  <td>Teaches Git concepts visually. The branching diagrams make it much easier to understand what's actually happening when you commit and push. The first few levels are all you need.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://docs.github.com/en/get-started/quickstart/hello-world" target="_blank">GitHub Quickstart — Hello World</a></td>
+                  <td>Official guide</td>
+                  <td>GitHub's own beginner walkthrough. Covers creating a repo, making commits, and opening pull requests. 15 minutes to complete.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://ohshitgit.com/" target="_blank">Oh Shit, Git!</a></td>
+                  <td>Reference (cheat sheet)</td>
+                  <td>A no-nonsense guide to fixing common Git mistakes. Bookmark this. The name is self-explanatory, and it delivers exactly what it promises.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Command Line -->
+          <div style="margin-bottom:2.5rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-soft);">
+              <div style="font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); opacity:0.5; line-height:1;">IV</div>
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:0.2rem;">Topic</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700; color:var(--white);">The Command Line</div>
+              </div>
+            </div>
+
+            <div class="prose">
+              <p>The command line (Terminal on Mac, Command Prompt or PowerShell on Windows) is the text-based interface you use to run Git commands and the Node.js scripts in this project. It looks intimidating but you only need to know about a dozen commands for this site. Here are the ones you'll actually use:</p>
+            </div>
+
+            <div class="code-label">Commands you'll use regularly with this site</div>
+            <pre><code><span class="c-comment"># Navigate into the project folder</span>
+cd brooklyn-alphas
+
+<span class="c-comment"># Go up one folder level</span>
+cd ..
+
+<span class="c-comment"># List the files in the current folder</span>
+ls          <span class="c-comment"># Mac / Linux</span>
+dir         <span class="c-comment"># Windows</span>
+
+<span class="c-comment"># See what files Git has noticed you changed</span>
+git status
+
+<span class="c-comment"># Stage, commit, and push (the publish workflow)</span>
+git add .
+git commit -m <span class="c-val">"your message here"</span>
+git push
+
+<span class="c-comment"># Pull down latest changes from GitHub (do this before editing)</span>
+git pull
+
+<span class="c-comment"># Run the photo manifest generator</span>
+node generate-manifests.js
+
+<span class="c-comment"># Run the image compressor</span>
+node compress.js</code></pre>
+
+            <table class="doc-table">
+              <thead><tr><th>Resource</th><th>Format</th><th>Why It's Good</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a class="prose" href="https://www.theodinproject.com/lessons/foundations-command-line-basics" target="_blank">The Odin Project — Command Line Basics</a></td>
+                  <td>Lesson + exercises</td>
+                  <td>A concise, practical intro covering the exact commands you need. Takes about an hour.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://www.youtube.com/watch?v=oxuRxtrO2Ag" target="_blank">The 50 Most Popular Linux & Terminal Commands — freeCodeCamp (YouTube)</a></td>
+                  <td>Video (5 hrs)</td>
+                  <td>Comprehensive reference video. You don't need to watch the whole thing — the first 30 minutes on basic navigation and file operations are the most useful for this project.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- VS Code -->
+          <div style="margin-bottom:2rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-soft);">
+              <div style="font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); opacity:0.5; line-height:1;">V</div>
+              <div>
+                <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:0.2rem;">Topic</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700; color:var(--white);">Working in VS Code</div>
+              </div>
+            </div>
+
+            <div class="prose">
+              <p>VS Code is the recommended code editor for this project. A few features are especially useful when working on this site:</p>
+            </div>
+
+            <div class="term-list">
+              <div class="term-item">
+                <div class="term-key">File Explorer</div>
+                <div class="term-val">The left panel. Click any file to open it. You can also drag files directly into the panel to add them to the project folder.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Find in File</div>
+                <div class="term-val"><code>Ctrl+F</code> / <code>Cmd+F</code> — search within the current file. Essential for finding specific text or class names in long HTML files.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Find in All Files</div>
+                <div class="term-val"><code>Ctrl+Shift+F</code> / <code>Cmd+Shift+F</code> — search across every file in the project. Use this when updating nav links or a year that appears on multiple pages.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Find & Replace</div>
+                <div class="term-val"><code>Ctrl+H</code> / <code>Cmd+H</code> — find text and replace it with something else. You can also use <code>Ctrl+Shift+H</code> to replace across all files.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Integrated Terminal</div>
+                <div class="term-val"><code>Ctrl+`</code> (backtick) opens a terminal panel directly inside VS Code. Use this to run Git commands and Node.js scripts without switching windows.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Live Preview</div>
+                <div class="term-val">Install the <strong>Live Preview</strong> extension (search Extensions panel, <code>Ctrl+Shift+X</code>) to see your HTML file update in real time as you type — no need to refresh the browser manually.</div>
+              </div>
+              <div class="term-item">
+                <div class="term-key">Source Control tab</div>
+                <div class="term-val">The Git icon in the left sidebar. VS Code has a built-in Git GUI — you can stage, commit, and push from here without typing terminal commands, once you're set up.</div>
+              </div>
+            </div>
+
+            <table class="doc-table" style="margin-top:1.25rem;">
+              <thead><tr><th>Resource</th><th>Format</th><th>Why It's Good</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a class="prose" href="https://code.visualstudio.com/docs/introvideos/basics" target="_blank">VS Code Intro Videos (Official)</a></td>
+                  <td>Short videos</td>
+                  <td>A series of 3–5 minute official tutorials covering the UI, editing basics, extensions, and the built-in terminal. The best 20 minutes you can spend before diving in.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+                <tr>
+                  <td><a class="prose" href="https://www.youtube.com/watch?v=KMxo3T_MTvY" target="_blank">VS Code Tutorial for Beginners — Programming with Mosh (YouTube)</a></td>
+                  <td>Video (1 hr)</td>
+                  <td>Covers the full editor from setup to practical use, including the Source Control / Git panel. Well-paced and beginner-friendly.</td>
+                  <td class="status-ok">Free</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <div class="callout-label">Suggested Learning Path</div>
+            If you're starting from scratch: <strong>(1)</strong> spend 1 hour on VS Code intro videos so the tool feels familiar → <strong>(2)</strong> spend 1 hour on the command line basics lesson so you can navigate and run commands → <strong>(3)</strong> watch the Git/GitHub video so publishing feels natural → <strong>(4)</strong> start The Odin Project Foundations for HTML and CSS. By the time you finish Foundations, you'll understand every line of code in this site.
+          </div>
+
+        </div>
+
+      </div><!-- /content-area -->
+    </div><!-- /main -->
+  </div><!-- /layout -->
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <span>Gamma Iota Lambda Chapter · Alpha Phi Alpha Fraternity, Inc.</span>
+    <span>Internal Documentation · Updated March 2026</span>
+  </div>
+
+  <!-- Mobile sidebar toggle -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">☰</button>
+
+  <script>
+    // ─── SIDEBAR TOGGLE (MOBILE) ───
+    const sidebar = document.getElementById('sidebar');
+    const toggle  = document.getElementById('sidebarToggle');
+    toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+
+    // Close sidebar on link click (mobile)
+    sidebar.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (window.innerWidth <= 900) sidebar.classList.remove('open');
+      });
+    });
+
+    // ─── ACTIVE NAV LINK ───
+    const sections = document.querySelectorAll('.section-anchor');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const id = entry.target.id;
+          const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    // ─── TROUBLESHOOT ACCORDION ───
+    document.querySelectorAll('.trouble-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.trouble-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
